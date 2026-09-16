@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventos — Casa de la Cultura de Puno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">Casa de la Cultura</a>
+    <div class="links">
+      <a href="index.html">Inicio</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="eventos.html" class="active">Eventos</a>
+    </div>
+  </nav>
+
+  <div class="wrap">
+    <div class="section-strip">
+      <span class="section-name" id="monthName"></span>
+      <span class="count" id="eventCount">— eventos</span>
+    </div>
+
+    <div class="event-layout">
+      <div id="filters"></div>
+      <div id="eventList"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      <h3>Casa de la Cultura de Puno</h3>
+      <p>Jr. Lima 552, Puno, Perú</p>
+      <p>info@casaculturapuno.pe</p>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="X">X</a>
+      </div>
+    </div>
+    <div>
+      <h3>Secciones</h3>
+      <p><a href="index.html">Inicio</a></p>
+      <p><a href="noticias.html">Noticias</a></p>
+      <p><a href="eventos.html">Eventos</a></p>
+    </div>
+    <div class="footer-map">
+      <h3>Ubicación</h3>
+      <iframe loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-70.0240%2C-15.8405%2C-70.0195%2C-15.8375&layer=mapnik&marker=-15.8390%2C-70.0217"></iframe>
+    </div>
+  </footer>
+
+<script src="site.js"></script>
+<script>
+  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNpG1_4Co2oUBVF79P9v_XOOtC2R0quRXFr0HyuhRdq276VLtKCbhW5kAnAuylzCmzgg0_K-2kggNx/pub?gid=457408969&single=true&output=csv";
+  const CATEGORIES = ["Todos", "Música", "Danza", "Teatro", "Exposición", "Taller"];
+  const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+  let activeFilter = "Todos";
+  let events = [];
+
+  function renderMonthName() {
+    const now = new Date();
+    document.getElementById("monthName").textContent = `${MESES[now.getMonth()]} ${now.getFullYear()}`;
+  }
+
+  function renderFilters() {
+    const el = document.getElementById("filters");
+    el.innerHTML = CATEGORIES.map(cat =>
+      `<button class="category-filter${cat === activeFilter ? " active" : ""}" data-cat="${cat}">${cat}</button>`
+    ).join("");
+    el.querySelectorAll(".category-filter").forEach(btn => {
+      btn.onclick = () => { activeFilter = btn.getAttribute("data-cat"); renderFilters(); renderEvents(); };
+    });
+  }
+
+  function renderEvents() {
+    const list = document.getElementById("eventList");
+    const filtered = activeFilter === "Todos" ? events : events.filter(e => e.categoria === activeFilter);
+    document.getElementById("eventCount").textContent = filtered.length + (filtered.length === 1 ? " evento" : " eventos");
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty">No hay eventos en esta categoría por ahora.</div>';
+      return;
+    }
+
+    list.innerHTML = filtered.map(e => `
+      <div class="event">
+        <div class="date-block">
+          <div class="day-num">${e.fecha.split("-")[2]}</div>
+          <div class="day-abbr">${e.dia_abbr}</div>
+        </div>
+        <div>
+          <div class="event-top">
+            <p class="event-title">${e.titulo}</p>
+            <span class="tag tag-${e.categoria}">${e.categoria}</span>
+          </div>
+          <div class="meta">${e.lugar}</div>
+          <div class="desc">${e.imagen ? `<img src="${e.imagen}" alt="${e.titulo}">` : ""}<p>${e.desc}</p></div>
+        </div>
+      </div>
+    `).join("");
+
+    list.querySelectorAll(".event").forEach(row => {
+      row.addEventListener("click", () => row.classList.toggle("open"));
+    });
+  }
+
+  renderMonthName();
+  fetchCSV(SHEET_CSV_URL)
+    .then(rows => { events = rows; renderFilters(); renderEvents(); })
+    .catch(() => {
+      document.getElementById("eventList").innerHTML = '<div class="empty">No se pudieron cargar los eventos. Intenta de nuevo más tarde.</div>';
+    });
+</script>
+</body>
+</html>

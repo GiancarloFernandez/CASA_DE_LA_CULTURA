@@ -3,311 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calendario Cultural</title>
+<title>Casa de la Cultura de Puno</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --ink: #2B1B3D;
-    --paper: #EFE6D8;
-    --paper-dim: #E4D9C6;
-    --marigold: #E8A33D;
-    --teal: #1F6F6B;
-    --clay: #B5482F;
-    --text: #211A17;
-    --text-soft: #6B5F52;
-    --line: rgba(33, 26, 23, 0.14);
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    background: var(--paper);
-    color: var(--text);
-    font-family: 'Work Sans', sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
-
-  header { margin-bottom: 32px; }
-
-  .kicker {
-    font-size: 13px;
-    letter-spacing: 0.04em;
-    color: var(--teal);
-    font-weight: 600;
-    margin: 0 0 6px;
-  }
-
-  h1 {
-    font-family: 'Fraunces', serif;
-    font-optical-sizing: auto;
-    font-weight: 600;
-    font-size: clamp(36px, 7vw, 52px);
-    line-height: 1.02;
-    margin: 0 0 10px;
-    color: var(--ink);
-  }
-
-  .subline {
-    font-size: 16px;
-    color: var(--text-soft);
-    max-width: 46ch;
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  .month-strip {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin: 40px 0 20px;
-    padding-bottom: 14px;
-    border-bottom: 2px solid var(--ink);
-  }
-
-  .month-name {
-    font-family: 'Fraunces', serif;
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--ink);
-    text-transform: capitalize;
-  }
-
-  .count { font-size: 14px; color: var(--text-soft); }
-
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-
-  .filter {
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--text);
-    font-family: 'Work Sans', sans-serif;
-    font-size: 13px;
-    padding: 7px 14px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
-
-  .filter:hover { border-color: var(--ink); }
-
-  .filter.active {
-    background: var(--ink);
-    border-color: var(--ink);
-    color: var(--paper);
-  }
-
-  .list { margin-top: 12px; }
-
-  .event {
-    display: grid;
-    grid-template-columns: 56px 1fr;
-    gap: 18px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--line);
-    cursor: pointer;
-  }
-
-  .event:first-child { border-top: 1px solid var(--line); }
-
-  .date-block {
-    text-align: center;
-    padding-top: 2px;
-  }
-
-  .day-num {
-    font-family: 'Fraunces', serif;
-    font-size: 26px;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--ink);
-  }
-
-  .day-abbr {
-    font-size: 11px;
-    color: var(--text-soft);
-    letter-spacing: 0.03em;
-    margin-top: 2px;
-  }
-
-  .event-body { min-width: 0; }
-
-  .event-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .event-title {
-    font-family: 'Fraunces', serif;
-    font-size: 19px;
-    font-weight: 500;
-    margin: 0;
-    color: var(--text);
-  }
-
-  .tag {
-    flex-shrink: 0;
-    font-size: 11px;
-    padding: 3px 9px;
-    border-radius: 999px;
-    white-space: nowrap;
-    margin-top: 3px;
-  }
-
-  .tag-Música { background: rgba(31,111,107,0.15); color: var(--teal); }
-  .tag-Danza { background: rgba(232,163,61,0.2); color: #96631a; }
-  .tag-Teatro { background: rgba(181,72,47,0.15); color: var(--clay); }
-  .tag-Exposición { background: rgba(43,27,61,0.1); color: var(--ink); }
-  .tag-Taller { background: rgba(31,111,107,0.15); color: var(--teal); }
-
-  .meta {
-    font-size: 13.5px;
-    color: var(--text-soft);
-    margin-top: 4px;
-  }
-
-  .desc {
-    font-size: 14.5px;
-    line-height: 1.55;
-    color: var(--text);
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
-  }
-
-  .event.open .desc {
-    max-height: 200px;
-    opacity: 1;
-    margin-top: 12px;
-  }
-
-  .empty {
-    padding: 40px 0;
-    text-align: center;
-    color: var(--text-soft);
-    font-size: 14px;
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <p class="kicker">Puno · Agenda pública</p>
-      <h1>Calendario Cultural</h1>
-      <p class="subline">Música, danza, teatro y talleres de la Casa de la Cultura.</p>
-    </header>
 
-    <div class="month-strip">
-      <span class="month-name" id="monthName"></span>
-      <span class="count" id="count">— eventos</span>
+  <nav class="navbar">
+    <a class="brand" href="index.html">Casa de la Cultura</a>
+    <div class="links">
+      <a href="index.html" class="active">Inicio</a>
+      <a href="noticias.html">Noticias</a>
+      <a href="eventos.html">Eventos</a>
     </div>
+  </nav>
 
-    <div class="filters" id="filters"></div>
-
-    <div class="list" id="list"></div>
+  <div class="hero" id="hero">
+    <h1 id="heroTitle">Danza de las tijeras, edición 2026</h1>
+    <p>Agenda cultural de la Casa de la Cultura de Puno</p>
+    <div class="hero-dots" id="heroDots"></div>
   </div>
 
+  <div class="wrap">
+    <div class="home-grid">
+      <div>
+        <div class="section-strip" style="margin-top:0;">
+          <span class="section-name">Próximos eventos</span>
+          <a href="eventos.html" style="font-size:13px; color:var(--celeste); text-decoration:none; font-weight:600;">Ver todos →</a>
+        </div>
+        <div id="previewList"></div>
+      </div>
+      <div>
+        <div class="section-strip" style="margin-top:0;">
+          <span class="section-name">Galería</span>
+        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      <h3>Casa de la Cultura de Puno</h3>
+      <p>Jr. Lima 552, Puno, Perú</p>
+      <p>info@casaculturapuno.pe</p>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="X">X</a>
+      </div>
+    </div>
+    <div>
+      <h3>Secciones</h3>
+      <p><a href="index.html">Inicio</a></p>
+      <p><a href="noticias.html">Noticias</a></p>
+      <p><a href="eventos.html">Eventos</a></p>
+    </div>
+    <div class="footer-map">
+      <h3>Ubicación</h3>
+      <iframe loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-70.0240%2C-15.8405%2C-70.0195%2C-15.8375&layer=mapnik&marker=-15.8390%2C-70.0217"></iframe>
+    </div>
+  </footer>
+
+<script src="site.js"></script>
 <script>
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNpG1_4Co2oUBVF79P9v_XOOtC2R0quRXFr0HyuhRdq276VLtKCbhW5kAnAuylzCmzgg0_K-2kggNx/pub?gid=457408969&single=true&output=csv";
+  const GALLERY_IMAGES = [
+    "images/foto1.jpeg",
+    "images/foto2.jpeg",
+    "images/foto3.jpeg",
+    "images/foto4.jpeg"
+  ];
 
-  const CATEGORIES = ["Todos", "Música", "Danza", "Teatro", "Exposición", "Taller"];
-  const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  const heroSlides = [
+    { title: "Danza de las tijeras, edición 2026", img: "images/foto5.jpeg" },
+    { title: "Feria de artesanía textil", img: "images/foto6.jpeg" },
+    { title: "Sikuris del Titicaca", img: "images/foto7.jpeg" },
+    { title: "Textiles del Altiplano", img: "images/foto8.jpeg" }
+  ];
 
-  let activeFilter = "Todos";
-  let events = [];
-
-  function parseCSV(text) {
-    const lines = text.trim().split("\n");
-    const headers = lines[0].split(",").map(h => h.trim());
-    return lines.slice(1).map(line => {
-      const cells = line.split(",").map(c => c.trim().replace(/^"|"$/g, ""));
-      const row = {};
-      headers.forEach((h, i) => row[h] = cells[i] || "");
-      return row;
-    });
-  }
-
-  async function loadEvents() {
-    const res = await fetch(SHEET_CSV_URL);
-    if (!res.ok) throw new Error("respuesta no válida");
-    const csv = await res.text();
-    events = parseCSV(csv);
-  }
-
-  function dayNum(fecha) {
-    return parseInt(fecha.split("-")[2], 10);
-  }
-
-  function renderMonthName() {
-    const now = new Date();
-    document.getElementById("monthName").textContent = `${MESES[now.getMonth()]} ${now.getFullYear()}`;
-  }
-
-  function renderFilters() {
-    const el = document.getElementById("filters");
-    el.innerHTML = "";
-    CATEGORIES.forEach(cat => {
-      const btn = document.createElement("button");
-      btn.className = "filter" + (cat === activeFilter ? " active" : "");
-      btn.textContent = cat;
-      btn.onclick = () => { activeFilter = cat; renderFilters(); renderList(); };
-      el.appendChild(btn);
-    });
-  }
-
-  function renderList() {
-    const list = document.getElementById("list");
-    const filtered = activeFilter === "Todos" ? events : events.filter(e => e.categoria === activeFilter);
-    document.getElementById("count").textContent = filtered.length + (filtered.length === 1 ? " evento" : " eventos");
-
-    if (filtered.length === 0) {
-      list.innerHTML = '<div class="empty">No hay eventos en esta categoría por ahora.</div>';
-      return;
+  function startHero() {
+    const heroEl = document.getElementById("hero");
+    const titleEl = document.getElementById("heroTitle");
+    const dotsEl = document.getElementById("heroDots");
+    dotsEl.innerHTML = heroSlides.map(() => "<span></span>").join("");
+    const dots = dotsEl.querySelectorAll("span");
+    let i = 0;
+    function show(index) {
+      heroEl.style.backgroundImage = `linear-gradient(rgba(13,60,87,0.35), rgba(13,60,87,0.35)), url(${heroSlides[index].img})`;
+      titleEl.textContent = heroSlides[index].title;
+      dots.forEach((d, di) => d.classList.toggle("active", di === index));
     }
-
-    list.innerHTML = "";
-    filtered.forEach(e => {
-      const row = document.createElement("div");
-      row.className = "event";
-      row.innerHTML = `
-        <div class="date-block">
-          <div class="day-num">${dayNum(e.fecha)}</div>
-          <div class="day-abbr">${e.dia_abbr}</div>
-        </div>
-        <div class="event-body">
-          <div class="event-top">
-            <p class="event-title">${e.titulo}</p>
-            <span class="tag tag-${e.categoria}">${e.categoria}</span>
-          </div>
-          <div class="meta">${e.lugar}</div>
-          <div class="desc">${e.desc}</div>
-        </div>
-      `;
-      row.onclick = () => row.classList.toggle("open");
-      list.appendChild(row);
-    });
+    show(0);
+    setInterval(() => { i = (i + 1) % heroSlides.length; show(i); }, 4000);
   }
 
-  renderMonthName();
-  loadEvents()
-    .then(() => {
-      renderFilters();
-      renderList();
-    })
-    .catch(() => {
-      document.getElementById("list").innerHTML = '<div class="empty">No se pudieron cargar los eventos. Intenta de nuevo más tarde.</div>';
-    });
+  function renderGallery() {
+    const grid = document.getElementById("galleryGrid");
+    grid.innerHTML = GALLERY_IMAGES.map(src => `<img src="${src}" alt="Foto de evento cultural" onerror="this.style.display='none'">`).join("");
+  }
+
+  async function renderUpcoming() {
+    const container = document.getElementById("previewList");
+    try {
+      const rows = await fetchCSV(SHEET_CSV_URL);
+      const today = new Date().toISOString().slice(0, 10);
+      const upcoming = rows.filter(e => e.fecha >= today).slice(0, 4);
+      if (upcoming.length === 0) {
+        container.innerHTML = '<div class="empty">No hay eventos próximos por ahora.</div>';
+        return;
+      }
+      container.innerHTML = upcoming.map(e => `
+        <div class="preview-item">
+          <div class="preview-day">${e.fecha.split("-")[2]}</div>
+          <div>
+            <p class="preview-title">${e.titulo}</p>
+            <p class="preview-meta">${e.lugar}</p>
+          </div>
+        </div>
+      `).join("");
+    } catch {
+      container.innerHTML = '<div class="empty">No se pudieron cargar los eventos.</div>';
+    }
+  }
+
+  startHero();
+  renderGallery();
+  renderUpcoming();
 </script>
 </body>
 </html>
