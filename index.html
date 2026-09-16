@@ -19,29 +19,31 @@
     </div>
   </nav>
 
-  <div class="hero" id="hero">
-    <h1 id="heroTitle">Danza de las tijeras, edición 2026</h1>
-    <p>Agenda cultural de la Casa de la Cultura de Puno</p>
-    <div class="hero-dots" id="heroDots"></div>
-  </div>
+  <main class="page-main">
+    <div class="hero" id="hero">
+      <h1 id="heroTitle">Danza de las tijeras, edición 2026</h1>
+      <p>Agenda cultural de la Casa de la Cultura de Puno</p>
+      <div class="hero-dots" id="heroDots"></div>
+    </div>
 
-  <div class="wrap">
-    <div class="home-grid">
-      <div>
-        <div class="section-strip" style="margin-top:0;">
-          <span class="section-name">Próximos eventos</span>
-          <a href="eventos.html" style="font-size:13px; color:var(--celeste); text-decoration:none; font-weight:600;">Ver todos →</a>
+    <div class="wrap">
+      <div class="home-grid">
+        <div>
+          <div class="section-strip" style="margin-top:0;">
+            <span class="section-name">Próximos eventos</span>
+            <a href="eventos.html" style="font-size:13px; color:var(--celeste); text-decoration:none; font-weight:600;">Ver todos →</a>
+          </div>
+          <div id="previewList"></div>
         </div>
-        <div id="previewList"></div>
-      </div>
-      <div>
-        <div class="section-strip" style="margin-top:0;">
-          <span class="section-name">Galería</span>
+        <div>
+          <div class="section-strip" style="margin-top:0;">
+            <span class="section-name">Galería</span>
+          </div>
+          <div class="gallery-grid" id="galleryGrid"></div>
         </div>
-        <div class="gallery-grid" id="galleryGrid"></div>
       </div>
     </div>
-  </div>
+  </main>
 
   <footer class="site-footer">
     <div>
@@ -70,17 +72,17 @@
 <script>
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNpG1_4Co2oUBVF79P9v_XOOtC2R0quRXFr0HyuhRdq276VLtKCbhW5kAnAuylzCmzgg0_K-2kggNx/pub?gid=457408969&single=true&output=csv";
   const GALLERY_IMAGES = [
-    "images/foto1.jpeg",
-    "images/foto2.jpeg",
-    "images/foto3.jpeg",
-    "images/foto4.jpeg"
+    "images/foto1.jpg",
+    "images/foto2.jpg",
+    "images/foto3.jpg",
+    "images/foto4.jpg"
   ];
 
   const heroSlides = [
-    { title: "Danza de las tijeras, edición 2026", img: "images/foto5.jpeg" },
-    { title: "Feria de artesanía textil", img: "images/foto6.jpeg" },
-    { title: "Sikuris del Titicaca", img: "images/foto7.jpeg" },
-    { title: "Textiles del Altiplano", img: "images/foto8.jpeg" }
+    { title: "Danza de las tijeras, edición 2026", img: "images/foto1.jpg" },
+    { title: "Feria de artesanía textil", img: "images/foto2.jpg" },
+    { title: "Sikuris del Titicaca", img: "images/foto3.jpg" },
+    { title: "Textiles del Altiplano", img: "images/foto4.jpg" }
   ];
 
   function startHero() {
