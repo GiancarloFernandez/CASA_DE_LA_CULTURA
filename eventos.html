@@ -114,7 +114,11 @@
 
   renderMonthName();
   fetchCSV(SHEET_CSV_URL)
-    .then(rows => { events = rows; renderFilters(); renderEvents(); })
+    .then(rows => {
+      events = rows.sort((a, b) => a.fecha.localeCompare(b.fecha));
+      renderFilters();
+      renderEvents();
+    })
     .catch(() => {
       document.getElementById("eventList").innerHTML = '<div class="empty">No se pudieron cargar los eventos. Intenta de nuevo más tarde.</div>';
     });
