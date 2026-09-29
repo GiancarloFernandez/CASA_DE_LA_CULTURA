@@ -34,7 +34,7 @@
         <select id="yearSelect"></select>
       </div>
 
-      <div class="catalog-list" id="catalogList"></div>
+      <div class="catalog-grid" id="catalogList"></div>
     </div>
   </main>
 
@@ -64,7 +64,7 @@
 
 <script src="site.js"></script>
 <script>
-  const CATALOG_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSd42fnxAbMok3XfA0Eau6szY1MoouiVdgLM2raGuWBUgWXg_EvxY2NZPwKjISfFg/pub?gid=34606628&single=true&output=csv";
+  const CATALOG_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLxK3_nIDLCn-BJCDthwXL0YrfSnFiNsG7FBvwZP4dY9wcXPxCeGqE2opAXDwSsw/pub?gid=1122249950&single=true&output=csv";
   const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
 
   let catalog = [];
@@ -100,13 +100,13 @@
     }
 
     list.innerHTML = filtered.map(c => `
-      <div class="catalog-item">
-        <div class="catalog-icon">${MESES[parseInt(c.mes, 10) - 1] ? MESES[parseInt(c.mes, 10) - 1].slice(0, 3).toUpperCase() : ""}<br>${c.anio}</div>
-        <div>
+      <div class="catalog-card">
+        ${c.imagen ? `<img src="${driveImageUrl(c.imagen)}" alt="${c.titulo_exposicion}">` : ""}
+        <div class="catalog-body">
+          <div class="catalog-meta-label">${MESES[parseInt(c.mes, 10) - 1] || ""} ${c.anio}</div>
           <p class="catalog-title">${c.titulo_exposicion}</p>
-          <p class="catalog-meta">${MESES[parseInt(c.mes, 10) - 1] || ""} ${c.anio}</p>
+          ${c.archivo_pdf ? `<a class="catalog-download" href="${driveDownloadUrl(c.archivo_pdf)}" target="_blank" rel="noopener">Descargar PDF</a>` : ""}
         </div>
-        ${c.archivo_pdf ? `<a class="catalog-download" href="${driveDownloadUrl(c.archivo_pdf)}" target="_blank" rel="noopener">Descargar PDF</a>` : ""}
       </div>
     `).join("");
   }

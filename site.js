@@ -25,12 +25,14 @@ function driveFileId(url) {
 }
 
 // Convierte un link normal de "Compartir" de Google Drive en un link
-// que se puede usar directo en <img src="...">
+// estable para usar en <img src="...">. Usamos el servicio de miniaturas
+// de Drive porque es mucho más confiable para insertar en sitios web
+// que el formato uc?export=view (que a veces se bloquea).
 function driveImageUrl(url) {
   if (!url) return url;
   if (!url.includes("drive.google.com")) return url;
   const id = driveFileId(url);
-  return id ? `https://drive.google.com/uc?export=view&id=${id}` : url;
+  return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w1000` : url;
 }
 
 // Convierte un link normal de "Compartir" de Google Drive en un link
