@@ -47,6 +47,18 @@ footer.site-footer { flex-shrink: 0; }
   font-size: 18px;
   font-weight: 600;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar .brand-logo {
+  height: 32px;
+  width: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #FFFFFF;
+  padding: 2px;
 }
 
 .navbar .links { display: flex; gap: 28px; }
@@ -234,6 +246,25 @@ footer.site-footer { flex-shrink: 0; }
 .tag-Teatro { background: rgba(181,72,47,0.15); color: var(--clay); }
 .tag-Exposición { background: var(--celeste-light); color: var(--navy); }
 .tag-Taller { background: rgba(31,111,107,0.15); color: var(--teal); }
+.tag-Cultura { background: rgba(29,143,203,0.15); color: var(--celeste); }
+.tag-Conferencias { background: rgba(107,95,82,0.15); color: var(--text-soft); }
+.tag-Conversatorio { background: rgba(13,60,87,0.1); color: var(--navy); }
+
+.month-year-filter {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.month-year-filter select {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 13.5px;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #FFFFFF;
+  color: var(--text);
+}
 
 .meta { font-size: 13.5px; color: var(--text-soft); margin-top: 4px; }
 
@@ -282,6 +313,81 @@ footer.site-footer { flex-shrink: 0; }
 .news-summary { font-size: 13.5px; color: var(--text-soft); margin: 0 0 8px; line-height: 1.5; }
 .news-link { font-size: 13px; color: var(--clay); font-weight: 600; text-decoration: none; }
 .news-link:hover { text-decoration: underline; }
+
+/* ---------- Galería (página completa) ---------- */
+.gallery-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 640px) {
+  .gallery-page-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.gallery-page-grid figure {
+  margin: 0;
+}
+
+.gallery-page-grid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--celeste-light);
+  display: block;
+}
+
+.gallery-page-grid figcaption {
+  font-size: 12px;
+  color: var(--text-soft);
+  margin-top: 6px;
+}
+
+/* ---------- Catálogo ---------- */
+.catalog-list { display: flex; flex-direction: column; gap: 14px; }
+
+.catalog-item {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 640px) {
+  .catalog-item { grid-template-columns: 50px 1fr; }
+  .catalog-download { grid-column: 1 / -1; }
+}
+
+.catalog-icon {
+  width: 70px; height: 70px;
+  border-radius: 6px;
+  background: var(--celeste-light);
+  color: var(--celeste);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+}
+
+.catalog-title { font-family: 'Fraunces', serif; font-size: 16px; font-weight: 500; margin: 0 0 4px; color: var(--text); }
+.catalog-meta { font-size: 12.5px; color: var(--text-soft); margin: 0; }
+
+.catalog-download {
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: var(--celeste);
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.catalog-download:hover { background: var(--navy); }
 
 /* ---------- Footer ---------- */
 footer.site-footer {

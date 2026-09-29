@@ -11,11 +11,15 @@
 <body>
 
   <nav class="navbar">
-    <a class="brand" href="index.html">Casa de la Cultura</a>
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="images/logo.png" alt="Logo Casa de la Cultura" onerror="this.style.display='none'">
+      Casa de la Cultura
+    </a>
     <div class="links">
       <a href="index.html" class="active">Inicio</a>
-      <a href="noticias.html">Noticias</a>
+      <a href="galeria.html">Galería</a>
       <a href="eventos.html">Eventos</a>
+      <a href="catalogo.html">Catálogo</a>
     </div>
   </nav>
 
@@ -51,16 +55,17 @@
       <p>Jr. Lima 552, Puno, Perú</p>
       <p>info@casaculturapuno.pe</p>
       <div class="social-icons">
-        <a href="https://www.facebook.com/casadelaculturapuno" aria-label="Facebook">FB</a>
-        <a href="https://www.instagram.com/explore/locations/436755260/casa-de-la-cultura-puno/" aria-label="Instagram">IG</a>
-        <a href="https://www.tiktok.com/@casa.de.la.cultura.puno?is_from_webapp=1&sender_device=pc" aria-label="TikTok">T</a>
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="X">X</a>
       </div>
     </div>
     <div>
       <h3>Secciones</h3>
       <p><a href="index.html">Inicio</a></p>
-      <p><a href="noticias.html">Noticias</a></p>
+      <p><a href="galeria.html">Galería</a></p>
       <p><a href="eventos.html">Eventos</a></p>
+      <p><a href="catalogo.html">Catálogo</a></p>
     </div>
     <div class="footer-map">
       <h3>Ubicación</h3>
@@ -71,18 +76,13 @@
 <script src="site.js"></script>
 <script>
   const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNpG1_4Co2oUBVF79P9v_XOOtC2R0quRXFr0HyuhRdq276VLtKCbhW5kAnAuylzCmzgg0_K-2kggNx/pub?gid=457408969&single=true&output=csv";
-  const GALLERY_IMAGES = [
-    "images/foto1.jpeg",
-    "images/foto2.jpeg",
-    "images/foto3.jpeg",
-    "images/foto4.jpeg"
-  ];
+  const GALLERY_CSV_URL = "";
 
   const heroSlides = [
-    { title: "Danza de las tijeras, edición 2026", img: "images/foto1.jpeg" },
-    { title: "Feria de artesanía textil", img: "images/foto2.jpeg" },
-    { title: "Sikuris del Titicaca", img: "images/foto3.jpeg" },
-    { title: "Textiles del Altiplano", img: "images/foto4.jpeg" }
+    { title: "Danza de las tijeras, edición 2026", img: "images/foto1.jpg" },
+    { title: "Feria de artesanía textil", img: "images/foto2.jpg" },
+    { title: "Sikuris del Titicaca", img: "images/foto3.jpg" },
+    { title: "Textiles del Altiplano", img: "images/foto4.jpg" }
   ];
 
   function startHero() {
@@ -101,9 +101,17 @@
     setInterval(() => { i = (i + 1) % heroSlides.length; show(i); }, 4000);
   }
 
-  function renderGallery() {
+  async function renderGallery() {
     const grid = document.getElementById("galleryGrid");
-    grid.innerHTML = GALLERY_IMAGES.map(src => `<img src="${src}" alt="Foto de evento cultural" onerror="this.style.display='none'">`).join("");
+    if (!GALLERY_CSV_URL) { grid.innerHTML = ""; return; }
+    try {
+      const rows = await fetchCSV(GALLERY_CSV_URL);
+      grid.innerHTML = rows.slice(0, 4).map(g =>
+        `<img src="${driveImageUrl(g.imagen)}" alt="${g.titulo || 'Foto de la galería'}" onerror="this.style.display='none'">`
+      ).join("");
+    } catch {
+      grid.innerHTML = "";
+    }
   }
 
   async function renderUpcoming() {

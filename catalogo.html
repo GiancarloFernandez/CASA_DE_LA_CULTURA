@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo — Casa de la Cultura de Puno</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="brand" href="index.html">
+      <img class="brand-logo" src="images/logo.png" alt="Logo Casa de la Cultura" onerror="this.style.display='none'">
+      Casa de la Cultura
+    </a>
+    <div class="links">
+      <a href="index.html">Inicio</a>
+      <a href="galeria.html">Galería</a>
+      <a href="eventos.html">Eventos</a>
+      <a href="catalogo.html" class="active">Catálogo</a>
+    </div>
+  </nav>
+
+  <main class="page-main">
+    <div class="wrap">
+      <div class="section-strip">
+        <span class="section-name">Catálogo de exposiciones</span>
+      </div>
+
+      <div class="month-year-filter">
+        <select id="monthSelect"></select>
+        <select id="yearSelect"></select>
+      </div>
+
+      <div class="catalog-list" id="catalogList"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <h3>Casa de la Cultura de Puno</h3>
+      <p>Jr. Lima 552, Puno, Perú</p>
+      <p>info@casaculturapuno.pe</p>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook">FB</a>
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="X">X</a>
+      </div>
+    </div>
+    <div>
+      <h3>Secciones</h3>
+      <p><a href="index.html">Inicio</a></p>
+      <p><a href="galeria.html">Galería</a></p>
+      <p><a href="eventos.html">Eventos</a></p>
+      <p><a href="catalogo.html">Catálogo</a></p>
+    </div>
+    <div class="footer-map">
+      <h3>Ubicación</h3>
+      <iframe loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=-70.0240%2C-15.8405%2C-70.0195%2C-15.8375&layer=mapnik&marker=-15.8390%2C-70.0217"></iframe>
+    </div>
+  </footer>
+
+<script src="site.js"></script>
+<script>
+  const CATALOG_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSd42fnxAbMok3XfA0Eau6szY1MoouiVdgLM2raGuWBUgWXg_EvxY2NZPwKjISfFg/pub?gid=34606628&single=true&output=csv";
+  const MESES = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+  let catalog = [];
+  let activeMonth = -1;
+  let activeYear = null;
+
+  function renderFilters() {
+    const years = [...new Set(catalog.map(c => c.anio))].sort().reverse();
+    const monthSelect = document.getElementById("monthSelect");
+    const yearSelect = document.getElementById("yearSelect");
+
+    monthSelect.innerHTML = `<option value="-1">Todos los meses</option>` +
+      MESES.map((m, i) => `<option value="${i + 1}">${m.charAt(0).toUpperCase() + m.slice(1)}</option>`).join("");
+
+    yearSelect.innerHTML = `<option value="">Todos los años</option>` +
+      years.map(y => `<option value="${y}">${y}</option>`).join("");
+
+    monthSelect.onchange = () => { activeMonth = parseInt(monthSelect.value, 10); renderCatalog(); };
+    yearSelect.onchange = () => { activeYear = yearSelect.value || null; renderCatalog(); };
+  }
+
+  function renderCatalog() {
+    const list = document.getElementById("catalogList");
+    const filtered = catalog.filter(c => {
+      const matchesMonth = activeMonth === -1 || parseInt(c.mes, 10) === activeMonth;
+      const matchesYear = !activeYear || c.anio === activeYear;
+      return matchesMonth && matchesYear;
+    });
+
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty">No hay catálogos con estos filtros.</div>';
+      return;
+    }
+
+    list.innerHTML = filtered.map(c => `
+      <div class="catalog-item">
+        <div class="catalog-icon">${MESES[parseInt(c.mes, 10) - 1] ? MESES[parseInt(c.mes, 10) - 1].slice(0, 3).toUpperCase() : ""}<br>${c.anio}</div>
+        <div>
+          <p class="catalog-title">${c.titulo_exposicion}</p>
+          <p class="catalog-meta">${MESES[parseInt(c.mes, 10) - 1] || ""} ${c.anio}</p>
+        </div>
+        ${c.archivo_pdf ? `<a class="catalog-download" href="${driveDownloadUrl(c.archivo_pdf)}" target="_blank" rel="noopener">Descargar PDF</a>` : ""}
+      </div>
+    `).join("");
+  }
+
+  async function loadCatalog() {
+    const list = document.getElementById("catalogList");
+    if (!CATALOG_CSV_URL) {
+      list.innerHTML = '<div class="empty">Todavía no hay catálogos publicados.</div>';
+      return;
+    }
+    try {
+      catalog = await fetchCSV(CATALOG_CSV_URL);
+      catalog.sort((a, b) => (b.anio + b.mes.padStart(2, "0")).localeCompare(a.anio + a.mes.padStart(2, "0")));
+      renderFilters();
+      renderCatalog();
+    } catch {
+      list.innerHTML = '<div class="empty">No se pudieron cargar los catálogos. Intenta de nuevo más tarde.</div>';
+    }
+  }
+
+  loadCatalog();
+</script>
+</body>
+</html>

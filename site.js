@@ -14,3 +14,30 @@ async function fetchCSV(url) {
   if (!res.ok) throw new Error("respuesta no válida");
   return parseCSV(await res.text());
 }
+
+function driveFileId(url) {
+  if (!url) return null;
+  const m1 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (m1) return m1[1];
+  const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m2) return m2[1];
+  return null;
+}
+
+// Convierte un link normal de "Compartir" de Google Drive en un link
+// que se puede usar directo en <img src="...">
+function driveImageUrl(url) {
+  if (!url) return url;
+  if (!url.includes("drive.google.com")) return url;
+  const id = driveFileId(url);
+  return id ? `https://drive.google.com/uc?export=view&id=${id}` : url;
+}
+
+// Convierte un link normal de "Compartir" de Google Drive en un link
+// de descarga directa (para PDFs de catálogos)
+function driveDownloadUrl(url) {
+  if (!url) return url;
+  if (!url.includes("drive.google.com")) return url;
+  const id = driveFileId(url);
+  return id ? `https://drive.google.com/uc?export=download&id=${id}` : url;
+}
