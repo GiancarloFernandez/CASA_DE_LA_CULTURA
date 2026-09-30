@@ -1,7 +1,7 @@
 :root {
-  --celeste: #1D8FCB;
-  --celeste-light: #DCEFFB;
-  --navy: #0D3C57;
+  --celeste: #6B0F14;
+  --celeste-light: #F3E1DF;
+  --navy: #2B0A0A;
   --text: #211A17;
   --text-soft: #6B5F52;
   --line: rgba(13, 60, 87, 0.14);
@@ -64,7 +64,7 @@ footer.site-footer { flex-shrink: 0; }
 .navbar .links { display: flex; gap: 28px; }
 
 .navbar .links a {
-  color: #DCEFFB;
+  color: #E8D4D2;
   font-size: 14px;
   font-weight: 500;
   text-decoration: none;
@@ -418,7 +418,7 @@ footer.site-footer h3 {
   margin: 0 0 8px;
 }
 
-footer.site-footer p { font-size: 12.5px; line-height: 1.7; margin: 0 0 4px; color: #B8D8E8; }
+footer.site-footer p { font-size: 12.5px; line-height: 1.7; margin: 0 0 4px; color: #E8D4D2; }
 
 footer.site-footer a {
   color: #B8D8E8;
@@ -426,7 +426,7 @@ footer.site-footer a {
 }
 
 .social-icons { display: flex; gap: 14px; margin-top: 10px; }
-.social-icons a { font-size: 18px; color: #DCEFFB; }
+.social-icons a { font-size: 18px; color: #E8D4D2; }
 .social-icons a:hover { color: #FFFFFF; }
 
 .footer-map iframe {

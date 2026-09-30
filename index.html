@@ -93,7 +93,7 @@
     const dots = dotsEl.querySelectorAll("span");
     let i = 0;
     function show(index) {
-      heroEl.style.backgroundImage = `linear-gradient(rgba(13,60,87,0.35), rgba(13,60,87,0.35)), url(${heroSlides[index].img})`;
+      heroEl.style.backgroundImage = `linear-gradient(rgba(43,10,10,0.35), rgba(43,10,10,0.35)), url(${heroSlides[index].img})`;
       titleEl.textContent = heroSlides[index].title;
       dots.forEach((d, di) => d.classList.toggle("active", di === index));
     }
